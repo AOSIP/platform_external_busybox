@@ -6,13 +6,13 @@ BIONIC_ICS := false
 BIONIC_L := true
 
 BUSYBOX_WARNING_HIDE := -Wno-implicit-fallthrough  -Wno-sign-compare -Wno-shift-negative-value \
-			-Wno-logical-not-parentheses -Wno-return-type
+			-Wno-logical-not-parentheses -Wno-return-type -Wno-error
 
 # Make a static library for regex.
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := android/regex/bb_regex.c
 LOCAL_C_INCLUDES := $(BB_PATH)/android/regex
-LOCAL_CFLAGS := -Wno-sign-compare
+LOCAL_CFLAGS := -Wno-sign-compare $(BUSYBOX_WARNING_HIDE)
 LOCAL_MODULE := libclearsilverregex
 include $(BUILD_STATIC_LIBRARY)
 
@@ -47,7 +47,7 @@ bb_gen := $(abspath $(TARGET_OUT_INTERMEDIATES)/busybox)
 
 busybox_prepare_full := $(bb_gen)/full/.config
 $(busybox_prepare_full): $(BB_PATH)/busybox-full.config
-	@echo -e ${CL_YLW}"Prepare config for busybox binary"${CL_RST}
+#	@echo -e ${CL_YLW}"Prepare config for busybox binary"${CL_RST}
 	@rm -rf $(bb_gen)/full
 	@rm -f $(shell find $(abspath $(call intermediates-dir-for,EXECUTABLES,busybox)) -name "*.o")
 	@mkdir -p $(@D)
